@@ -33,6 +33,8 @@ void loadResources(void) {
   
   // Bomb Sprites
   RM.loadSprite("sprites/bomb.txt", "bomb");
+  RM.loadSprite("sprites/big-bomb.txt", "big-bomb");
+  RM.loadSprite("sprites/small-bomb.txt", "small-bomb");
 
   // Other sprites.
   RM.loadSprite("sprites/kudos.txt", "kudos");

@@ -2,6 +2,10 @@
 // bomb.cpp
 //
 
+// Bomb spawns 20% of the time, loses 100 points per hit.
+// Bomb also spawns with random color and size
+// regular size is 25 points deduction, big ends the game but is slower, small is faster and spawns more but less points off
+
 // Engine includes.
 #include "EventCollision.h"
 #include "EventOut.h"
@@ -20,7 +24,21 @@
 Bomb::Bomb() {
     //setup the bomb
     setType("bomb");
-    if (setSprite("bomb") != 0)
+
+    //declaring and producing random bomb size
+    //given random number, it will spawn a different bomb size
+    int bomb_choice = rand%3;
+    if(bomb_choice == 0){
+        setSprite("small-bomb");
+    }
+    else if(bomb_choice == 1){
+        setSprite("big-bomb")
+    }
+    else{
+        setSprite("bomb")
+    }
+
+    if (getAnimation.getSprite() != NULL)
         LM.writeLog("BOMB::BOMB(): Error! Unable to find sprite: bomb");
 
     first_spawn = true; // To ignore first out of bounds (when spawning).
@@ -63,10 +81,26 @@ int Bomb::collide(const df::EventCollision *p_e) {
   // Sword collision means ninja sliced this bomb.
   if (p_e -> getObject1() -> getType() == SWORD_STRING || p_e -> getObject2() -> getType() == SWORD_STRING) {
 
+    //detect for big bomb, if detected, end game immediatly, else check for small, else normal deduction
+    if(getAnimation().getSprite()->getLabel().find("big") != std::string::npos){
+        //trigger game over
+        df::ObjectList ol = WM.objectsOfType(GROCER_STRING);
+        if(ol.getCount()>0){
+            Grocer *p_g = dynamic_cast <Grocer *> (ol[0]);
+            p_g->gameOver();
+        }
+    }
+    else if(getAnimation().getSprite()->getLabel().find("small") != std::string::npos){
+        // delete points.
+        df::EventView ev(POINTS_STRING, -5, true);
+        WM.onEvent(&ev);
+    }
+    else{
     // delete points.
     df::EventView ev(POINTS_STRING, -25, true);
     WM.onEvent(&ev);
-
+    }
+    
     // Destroy this bomb.
     WM.markForDelete(this);
   }
@@ -140,5 +174,12 @@ void Bomb::start(float speed) {
   df::Vector velocity = end - begin;
   velocity.normalize();
   setDirection(velocity);
-  setSpeed(speed);
+
+  //check for small bomb, if detected, go faster than normal
+  if(getAnimation().getSprite()->getLabel().find("small") != std::string::npos){
+    setSpeed(speed * 2.5f);
+  }
+  else{
+    setSpeed(speed);
+  }
 }

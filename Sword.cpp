@@ -83,8 +83,8 @@ int Sword::step(const df::EventStep *p_e) {
   
   for (int i=0; i<ol.getCount(); i++) {
     
-    // Only slice Fruit.
-    if (!(dynamic_cast <Fruit *> (ol[i])))
+    // Only slice Fruit or Bomb.
+    if (!(dynamic_cast <Fruit *> (ol[i])) && !(dynamic_cast <Bomb *> (ol[i])))
       continue;
     
     // If line from previous position intersects --> slice!
