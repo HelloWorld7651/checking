@@ -44,18 +44,31 @@ int Grocer::eventHandler(const df::Event *p_e) {
 // Handle step event.
 int Grocer::step(const df::EventStep *p_e) {
 
-  // Fruit grocer.
+  // Fruit and bomb grocer.
   m_spawn -= 1;
   if (m_spawn < 0) {
 
     int mod = m_wave+1 > NUM_FRUITS ? NUM_FRUITS : m_wave + 1;
-    Fruit *p_f = new Fruit(FRUIT[rand() % mod]);
-    if (!p_f) {
-      LM.writeLog("Grocer::step(): Error! Unable to allocate Fruit.");
-      return 0;
+    //random chance for bomb to spawn
+    int bomb_chance = rand()%100;
+    //checks for a 20 percent chance, if yes, then bomb spawns. 
+    if(bomb_chance <80){
+      Bomb *p_f = new Bomb();
+      if (!p_f) {
+        LM.writeLog("Grocer::step(): Error! Unable to allocate Bomb.");
+        return 0;
+      }
+      p_f -> start(m_wave_speed);
+      
     }
-
-    p_f -> start(m_wave_speed);
+    else{
+      Fruit *p_f = new Fruit(FRUIT[rand() % mod]);
+      if (!p_f) {
+        LM.writeLog("Grocer::step(): Error! Unable to allocate Fruit.");
+        return 0;
+      }
+      p_f -> start(m_wave_speed);
+    }
 
     m_spawn = m_wave_spawn;
   }

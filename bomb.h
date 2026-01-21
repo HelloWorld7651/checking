@@ -26,10 +26,13 @@ class Bomb: public df::Object{
     public:
         //constructor
         Bomb();
+        // Destructor - if inside the game world, create explosion.
+        ~Bomb();
 
         //handle event
         int eventHandler(const df::Event *p_e) override;
 
+        // Setup starting conditions.
         void start(float speed);
 };
 

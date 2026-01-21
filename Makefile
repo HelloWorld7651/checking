@@ -46,6 +46,7 @@ GAMESRC= \
 	Sword.cpp \
 	Timer.cpp \
 	util.cpp \
+	bomb.cpp \
 
 GAME= game.cpp
 EXECUTABLE= fruit-ninja

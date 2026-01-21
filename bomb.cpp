@@ -63,7 +63,7 @@ int Bomb::collide(const df::EventCollision *p_e) {
   // Sword collision means ninja sliced this bomb.
   if (p_e -> getObject1() -> getType() == SWORD_STRING) {
 
-    // Add points.
+    // delete points.
     df::EventView ev(POINTS_STRING, -25, true);
     WM.onEvent(&ev);
 
@@ -88,3 +88,57 @@ Bomb::~Bomb() {
   }
 }
 
+// Setup starting conditions.
+void Bomb::start(float speed) {
+
+  df::Vector begin, end;
+
+  // Get world boundaries.
+  int world_x = (int) WM.getBoundary().getHorizontal();
+  int world_y = (int) WM.getBoundary().getVertical();
+  df::Vector world_center(world_x/2.0f, world_y/2.0f);
+
+  // Pick random side (Top, Right, Bottom, Left) to spawn.
+  switch (rand() % 4) {
+
+  case 0: // Top.
+    begin.setX((float) (rand()%world_x));
+    begin.setY(0 - 3.0f);
+    end.setX((float) (rand()%world_x));
+    end.setY(world_y + 3.0f);
+    break;
+
+  case 1: // Right.
+    begin.setX(world_x + 3.0f);
+    begin.setY((float) (rand()%world_y));
+    end.setX(0 - 3.0f);
+    end.setY((float) (rand()%world_y));
+    break;
+
+  case 2: // Bottom.
+    begin.setX((float) (rand()%world_x));
+    begin.setY(world_y + 3.0f);
+    end.setX((float) (rand()%world_x));
+    end.setY(0 - 3.0f);
+    break;
+    
+  case 3: // Left.
+    begin.setX(0 - 3.0f);
+    begin.setY((float) (rand()%world_y));
+    end.setX(world_x + 3.0f);
+    end.setY((float) (rand()%world_y));
+    break;
+
+  default:
+    break;
+  }
+
+  // Move Object into position.
+  WM.moveObject(this, begin);
+
+  // Set velocity towards opposite side.
+  df::Vector velocity = end - begin;
+  velocity.normalize();
+  setDirection(velocity);
+  setSpeed(speed);
+}
