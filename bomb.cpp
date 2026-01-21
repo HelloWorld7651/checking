@@ -16,6 +16,7 @@
 
 // Game includes.
 #include "game.h"
+#include "Grocer.h"
 #include "bomb.h"
 #include "Points.h"
 #include "Sword.h"
@@ -27,18 +28,21 @@ Bomb::Bomb() {
 
     //declaring and producing random bomb size
     //given random number, it will spawn a different bomb size
-    int bomb_choice = rand%3;
+    int bomb_choice = rand()%3;
+    //declarining and producing random color size
+    //given random number, it will spawn a different color for the bomb chosen
+    int color_choice = rand()%5;
     if(bomb_choice == 0){
         setSprite("small-bomb");
     }
     else if(bomb_choice == 1){
-        setSprite("big-bomb")
+        setSprite("big-bomb");
     }
     else{
-        setSprite("bomb")
+        setSprite("bomb");
     }
 
-    if (getAnimation.getSprite() != NULL)
+    if (getAnimation().getSprite() == NULL)
         LM.writeLog("BOMB::BOMB(): Error! Unable to find sprite: bomb");
 
     first_spawn = true; // To ignore first out of bounds (when spawning).
@@ -92,7 +96,7 @@ int Bomb::collide(const df::EventCollision *p_e) {
     }
     else if(getAnimation().getSprite()->getLabel().find("small") != std::string::npos){
         // delete points.
-        df::EventView ev(POINTS_STRING, -5, true);
+        df::EventView ev(POINTS_STRING, -10, true);
         WM.onEvent(&ev);
     }
     else{
@@ -100,7 +104,7 @@ int Bomb::collide(const df::EventCollision *p_e) {
     df::EventView ev(POINTS_STRING, -25, true);
     WM.onEvent(&ev);
     }
-    
+
     // Destroy this bomb.
     WM.markForDelete(this);
   }
