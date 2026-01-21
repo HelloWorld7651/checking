@@ -61,7 +61,7 @@ int Bomb::out(const df::EventOut *p_e) {
 int Bomb::collide(const df::EventCollision *p_e) {
 
   // Sword collision means ninja sliced this bomb.
-  if (p_e -> getObject1() -> getType() == SWORD_STRING) {
+  if (p_e -> getObject1() -> getType() == SWORD_STRING || p_e -> getObject2() -> getType() == SWORD_STRING) {
 
     // delete points.
     df::EventView ev(POINTS_STRING, -25, true);

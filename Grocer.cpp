@@ -52,7 +52,7 @@ int Grocer::step(const df::EventStep *p_e) {
     //random chance for bomb to spawn
     int bomb_chance = rand()%100;
     //checks for a 20 percent chance, if yes, then bomb spawns. 
-    if(bomb_chance <80){
+    if(bomb_chance <20){
       Bomb *p_f = new Bomb();
       if (!p_f) {
         LM.writeLog("Grocer::step(): Error! Unable to allocate Bomb.");
