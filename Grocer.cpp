@@ -13,6 +13,7 @@
 
 // Game includes.
 #include "Fruit.h"
+#include "bomb.h"
 #include "GameOver.h"
 #include "Grocer.h"
 

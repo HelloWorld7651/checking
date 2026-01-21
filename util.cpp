@@ -30,6 +30,9 @@ void loadResources(void) {
     std::string name = "sprites/" + FRUIT[i] + ".txt";
     RM.loadSprite(name, FRUIT[i]);
   }
+  
+  // Bomb Sprites
+  RM.loadSprite("sprites/bomb.txt", "bomb");
 
   // Other sprites.
   RM.loadSprite("sprites/kudos.txt", "kudos");
