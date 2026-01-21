@@ -2,9 +2,11 @@
 // bomb.cpp
 //
 
-// Bomb spawns 20% of the time, loses 100 points per hit.
-// Bomb also spawns with random color and size
-// regular size is 25 points deduction, big ends the game but is slower, small is faster and spawns more but less points off
+// Bomb spawns 20% of the time
+// Bomb also spawns with size
+// regular size is 25 points deduction, big ends the game but is slower, small is faster and spawns more but 5 points off
+// BOMB SOUND GOT FROM https://sounds.spriters-resource.com/mobile/fruitninja/asset/399604/
+
 
 // Engine includes.
 #include "EventCollision.h"
@@ -31,15 +33,56 @@ Bomb::Bomb() {
     int bomb_choice = rand()%3;
     //declarining and producing random color size
     //given random number, it will spawn a different color for the bomb chosen
-    int color_choice = rand()%5;
+    int color_choice = rand()%4;
     if(bomb_choice == 0){
         setSprite("small-bomb");
+        //split between different colors
+        // 1 is red, 2 is blue, 3 is green, 4 is yellow(default color)
+        switch(color_choice){
+            case 1:
+                setSprite("red-small-bomb");
+                break;
+            case 2:
+                setSprite("blue-small-bomb");
+                break;
+            case 3:
+                setSprite("green-small-bomb");
+                break;
+            default:
+                break;
+        }
     }
     else if(bomb_choice == 1){
         setSprite("big-bomb");
+        switch(color_choice){
+            case 1:
+                setSprite("red-big-bomb");
+                break;
+            case 2:
+                setSprite("blue-big-bomb");
+                break;
+            case 3:
+                setSprite("green-big-bomb");
+                break;
+            default:
+                break;
+        }
     }
     else{
         setSprite("bomb");
+        switch(color_choice){
+            case 1:
+                setSprite("red-bomb");
+                break;
+            case 2:
+                setSprite("blue-bomb");
+                break;
+            case 3:
+                setSprite("green-bomb");
+                break;
+            default:
+                break;
+        }
     }
 
     if (getAnimation().getSprite() == NULL)
@@ -96,13 +139,13 @@ int Bomb::collide(const df::EventCollision *p_e) {
     }
     else if(getAnimation().getSprite()->getLabel().find("small") != std::string::npos){
         // delete points.
-        df::EventView ev(POINTS_STRING, -10, true);
+        df::EventView ev(POINTS_STRING, -5, true);
         WM.onEvent(&ev);
     }
     else{
-    // delete points.
-    df::EventView ev(POINTS_STRING, -25, true);
-    WM.onEvent(&ev);
+      // delete points.
+      df::EventView ev(POINTS_STRING, -25, true);
+      WM.onEvent(&ev);
     }
 
     // Destroy this bomb.
@@ -122,8 +165,10 @@ Bomb::~Bomb() {
       GM.getGameOver() == false) {
     df::explode(getAnimation().getSprite(), getAnimation().getIndex(), getPosition(),
                 EXPLOSION_AGE, EXPLOSION_SPEED, EXPLOSION_ROTATE);
-
-  }
+ 
+    //play the boom sound
+    play_sound("explode");
+    }
 }
 
 // Setup starting conditions.
@@ -181,7 +226,11 @@ void Bomb::start(float speed) {
 
   //check for small bomb, if detected, go faster than normal
   if(getAnimation().getSprite()->getLabel().find("small") != std::string::npos){
-    setSpeed(speed * 2.5f);
+    setSpeed(speed * 1.5f);
+  }
+  //make the big bomb slower
+  else if(getAnimation().getSprite()->getLabel().find("big") != std::string::npos){
+    setSpeed(speed * 0.5f);
   }
   else{
     setSpeed(speed);

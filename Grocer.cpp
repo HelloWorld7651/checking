@@ -61,15 +61,19 @@ int Grocer::step(const df::EventStep *p_e) {
       p_f -> start(m_wave_speed);
       
       //check if this is a small bomb, for swarming
-      if(p_f->getAnimation().getSprite()->getLabel() == "small-bomb"){
-        //spawns 9 more small bombs at random location for swarming
-        for(int i = 0; i < 9; i++){
+      if(p_f->getAnimation().getSprite()->getLabel() == "small"){
+        //spawns 5 more small bombs at random location for swarm`ing
+        for(int i = 0; i < 5; i++){
           Bomb *swarm= new Bomb();
           if(swarm){
-            swarm->setSprite("small-bomb");
-            swarm->start(m_wave_spawn);
+            swarm->setSprite(getAnimation().getSprite()->getLabel());
+
+            //add speed variance to each bomb, so that it doesn't look like just appearning out of nowhere
+            float variance = (rand()% 10+ 10)/10.0f;
+            swarm->start(m_wave_speed * variance);
           }
         }
+        //debuging and logging
         LM.writeLog("Swarm Event");
       }
     }
