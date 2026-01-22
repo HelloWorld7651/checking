@@ -33,8 +33,17 @@ void loadResources(void) {
   
   // Bomb Sprites
   RM.loadSprite("sprites/bomb.txt", "bomb");
+  RM.loadSprite("sprites/red-bomb.txt", "red-bomb");
+  RM.loadSprite("sprites/blue-bomb.txt", "blue-bomb");
+  RM.loadSprite("sprites/green-bomb.txt", "green-bomb");
   RM.loadSprite("sprites/big-bomb.txt", "big-bomb");
+    RM.loadSprite("sprites/red-big-bomb.txt", "red-big-bomb");
+  RM.loadSprite("sprites/blue-big-bomb.txt", "blue-big-bomb");
+  RM.loadSprite("sprites/green-big-bomb.txt", "green-big-bomb");
   RM.loadSprite("sprites/small-bomb.txt", "small-bomb");
+    RM.loadSprite("sprites/red-small-bomb.txt", "red-small-bomb");
+  RM.loadSprite("sprites/blue-small-bomb.txt", "blue-small-bomb");
+  RM.loadSprite("sprites/green-small-bomb.txt", "green-small-bomb");
   RM.loadSound("sounds/Bomb-explode.wav", "explode");
 
   // Other sprites.

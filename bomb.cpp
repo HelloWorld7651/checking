@@ -129,7 +129,7 @@ int Bomb::collide(const df::EventCollision *p_e) {
   if (p_e -> getObject1() -> getType() == SWORD_STRING || p_e -> getObject2() -> getType() == SWORD_STRING) {
 
     //detect for big bomb, if detected, end game immediatly, else check for small, else normal deduction
-    if(getAnimation().getSprite()->getLabel().find("big") != std::string::npos){
+    if(getAnimation().getSprite()->getLabel().find("big") != -1){
         //trigger game over
         df::ObjectList ol = WM.objectsOfType(GROCER_STRING);
         if(ol.getCount()>0){
@@ -137,7 +137,7 @@ int Bomb::collide(const df::EventCollision *p_e) {
             p_g->gameOver();
         }
     }
-    else if(getAnimation().getSprite()->getLabel().find("small") != std::string::npos){
+    else if(getAnimation().getSprite()->getLabel().find("small") != -1){
         // delete points.
         df::EventView ev(POINTS_STRING, -5, true);
         WM.onEvent(&ev);
@@ -225,11 +225,11 @@ void Bomb::start(float speed) {
   setDirection(velocity);
 
   //check for small bomb, if detected, go faster than normal
-  if(getAnimation().getSprite()->getLabel().find("small") != std::string::npos){
+  if(getAnimation().getSprite()->getLabel().find("small") != -1){
     setSpeed(speed * 1.5f);
   }
   //make the big bomb slower
-  else if(getAnimation().getSprite()->getLabel().find("big") != std::string::npos){
+  else if(getAnimation().getSprite()->getLabel().find("big") != -1){
     setSpeed(speed * 0.5f);
   }
   else{
